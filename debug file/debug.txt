@@ -1,0 +1,249 @@
+   C:\laragon\www\vero_learning_management_system   main ●  ?20 ~8  npm run dev:all
+
+> vero@0.1.0 dev:all
+> concurrently "npm run dev" "npm run dev:go" "npm run dev:py"
+
+[1]
+[1] > vero@0.1.0 dev:go
+[1] > cd backend && go run cmd/server/main.go
+[1]
+[0]
+[0] > vero@0.1.0 dev
+[0] > next dev
+[0]
+[2]
+[2] > vero@0.1.0 dev:py
+[2] > cd ai_microservice && uvicorn app:app --reload --port 8000
+[2]
+[2] INFO:     Will watch for changes in these directories: ['C:\\laragon\\www\\vero_learning_management_system\\ai_microservice']
+[2] INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+[2] INFO:     Started reloader process [1992] using StatReload
+[2] Process SpawnProcess-1:
+[2] Traceback (most recent call last):
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\multiprocessing\process.py", line 314, in _bootstrap
+[2]     self.run()
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\multiprocessing\process.py", line 108, in run
+[2]     self._target(*self._args, **self._kwargs)
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+[2]     target(sockets=sockets)
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\server.py", line 75, in run
+[2]     return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+[2]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+[2]     return runner.run(main)
+[2]            ^^^^^^^^^^^^^^^^
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+[2]     return self._loop.run_until_complete(task)
+[2]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+[2]     return future.result()
+[2]            ^^^^^^^^^^^^^^^
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\server.py", line 79, in serve
+[2]     await self._serve(sockets)
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\server.py", line 86, in _serve
+[2]     config.load()
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\config.py", line 449, in load
+[2]     self.loaded_app = import_from_string(self.app)
+[2]                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\importer.py", line 22, in import_from_string
+[2]     raise exc from None
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+[2]     module = importlib.import_module(module_str)
+[2]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2]   File "C:\Users\rafif\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py", line 90, in import_module
+[2]     return _bootstrap._gcd_import(name[level:], package, level)
+[2]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+[2]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+[2]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+[2]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+[2]   File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+[2]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+[2]   File "C:\laragon\www\vero_learning_management_system\ai_microservice\app.py", line 1, in <module>
+[2]     from fastapi import FastAPI, HTTPException
+[2] ModuleNotFoundError: No module named 'fastapi'
+[1] ✅ Model "bisindo" loaded — 100 labels, 212 features/frame, seq_len=30
+[1] ✅ Model "sibi" loaded — 48 labels, 212 features/frame, seq_len=30
+[1]
+[1] ╔══════════════════════════════════════════╗
+[1] ║       VERO Backend — Go Server           ║
+[1] ║                                          ║
+[1] ║  🚀 Listening on :8080                  ║
+[1] ║  📊 Models loaded: 2                    ║
+[1] ║  🔗 CORS origin: http://localhost:3000   ║
+[1] ║                                          ║
+[1] ║  Endpoints:                              ║
+[1] ║  GET  /health                            ║
+[1] ║  POST /api/v1/predict                    ║
+[1] ║  GET  /api/v1/models                     ║
+[1] ║  GET  /api/v1/labels/{type}              ║
+[1] ║  WS   /ws/signal                         ║
+[1] ╚══════════════════════════════════════════╝
+[0] ▲ Next.js 16.1.6 (Turbopack)
+[0] - Local:         http://localhost:3000
+[0] - Network:       http://192.168.137.1:3000
+[0] - Environments: .env
+[0]
+[0] ✓ Starting...
+[0] ✓ Ready in 10.3s
+[0] ○ Compiling / ...
+[0]  GET / 200 in 42ms (compile: 5ms, render: 37ms)
+[0]  GET /login 200 in 57ms (compile: 26ms, render: 32ms)
+[0] [next-auth][warn][NEXTAUTH_URL]
+[0] https://next-auth.js.org/warnings#nextauth_url
+[0]  GET /api/auth/session 200 in 1569ms (compile: 1545ms, render: 24ms)
+[0]  GET /login-bg.png 404 in 238ms (compile: 193ms, render: 45ms)
+[0] ⨯ The requested resource isn't a valid image for /login-bg.png received null
+[0]  POST /api/auth 200 in 372ms (compile: 233ms, render: 138ms)
+[0]  GET /dashboard 200 in 1399ms (compile: 1374ms, render: 25ms)
+[0]  GET /dashboard 200 in 39ms (compile: 6ms, render: 33ms)
+[0]  POST /api/db 200 in 116ms (compile: 100ms, render: 16ms)
+[0]  POST /api/db 200 in 31ms (compile: 4ms, render: 28ms)
+[0]  POST /api/db 200 in 19ms (compile: 2ms, render: 17ms)
+[0]  POST /api/db 200 in 25ms (compile: 7ms, render: 18ms)
+[0]  GET /dashboard/studio/translate 200 in 312ms (compile: 297ms, render: 15ms)
+[1] 2026/07/18 11:15:26 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:15:26 [GET] /ws/predict [::1]:50108 — 500 (516µs)
+[1] 2026/07/18 11:15:29 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:15:29 [GET] /ws/predict [::1]:50109 — 500 (0s)
+[1] 2026/07/18 11:15:32 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:15:32 [GET] /ws/predict [::1]:50112 — 500 (0s)
+[1] 2026/07/18 11:15:41 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:15:41 [GET] /ws/predict [::1]:50115 — 500 (0s)
+[1] 2026/07/18 11:15:44 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:15:44 [GET] /ws/predict [::1]:50116 — 500 (0s)
+[1] 2026/07/18 11:15:47 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:15:47 [GET] /ws/predict [::1]:50118 — 500 (0s)
+[1] 2026/07/18 11:15:50 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:15:50 [GET] /ws/predict [::1]:50127 — 500 (0s)
+[1] 2026/07/18 11:15:53 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:15:53 [GET] /ws/predict [::1]:50128 — 500 (0s)
+[1] 2026/07/18 11:15:56 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:15:56 [GET] /ws/predict [::1]:50130 — 500 (0s)
+[1] 2026/07/18 11:15:59 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:15:59 [GET] /ws/predict [::1]:50133 — 500 (0s)
+[1] 2026/07/18 11:16:02 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:02 [GET] /ws/predict [::1]:50136 — 500 (0s)
+[1] 2026/07/18 11:16:05 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:05 [GET] /ws/predict [::1]:50140 — 500 (0s)
+[1] 2026/07/18 11:16:08 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:08 [GET] /ws/predict [::1]:50141 — 500 (0s)
+[1] 2026/07/18 11:16:11 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:11 [GET] /ws/predict [::1]:50144 — 500 (0s)
+[1] 2026/07/18 11:16:14 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:14 [GET] /ws/predict [::1]:50146 — 500 (0s)
+[1] 2026/07/18 11:16:17 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:17 [GET] /ws/predict [::1]:50148 — 500 (0s)
+[1] 2026/07/18 11:16:20 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:20 [GET] /ws/predict [::1]:50150 — 500 (0s)
+[1] 2026/07/18 11:16:23 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:23 [GET] /ws/predict [::1]:50152 — 500 (0s)
+[1] 2026/07/18 11:16:27 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:27 [GET] /ws/predict [::1]:50153 — 500 (0s)
+[1] 2026/07/18 11:16:31 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:31 [GET] /ws/predict [::1]:50156 — 500 (0s)
+[1] 2026/07/18 11:16:35 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:35 [GET] /ws/predict [::1]:50161 — 500 (0s)
+[1] 2026/07/18 11:16:39 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:39 [GET] /ws/predict [::1]:50164 — 500 (0s)
+[1] 2026/07/18 11:16:43 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:43 [GET] /ws/predict [::1]:50165 — 500 (0s)
+[1] 2026/07/18 11:16:47 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:47 [GET] /ws/predict [::1]:50168 — 500 (0s)
+[1] 2026/07/18 11:16:51 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:51 [GET] /ws/predict [::1]:50169 — 500 (0s)
+[1] 2026/07/18 11:16:55 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:55 [GET] /ws/predict [::1]:50170 — 500 (0s)
+[1] 2026/07/18 11:16:59 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:16:59 [GET] /ws/predict [::1]:50171 — 500 (0s)
+[1] 2026/07/18 11:17:03 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:03 [GET] /ws/predict [::1]:50178 — 500 (0s)
+[1] 2026/07/18 11:17:07 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:07 [GET] /ws/predict [::1]:50179 — 500 (0s)
+[1] 2026/07/18 11:17:10 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:10 [GET] /ws/predict [::1]:50182 — 500 (0s)
+[1] 2026/07/18 11:17:14 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:14 [GET] /ws/predict [::1]:50184 — 500 (0s)
+[1] 2026/07/18 11:17:19 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:19 [GET] /ws/predict [::1]:50186 — 500 (0s)
+[1] 2026/07/18 11:17:26 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:26 [GET] /ws/predict [::1]:50187 — 500 (0s)
+[1] 2026/07/18 11:17:31 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:31 [GET] /ws/predict [::1]:50188 — 500 (0s)
+[1] 2026/07/18 11:17:35 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:35 [GET] /ws/predict [::1]:50191 — 500 (0s)
+[1] 2026/07/18 11:17:43 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:43 [GET] /ws/predict [::1]:50193 — 500 (0s)
+[1] 2026/07/18 11:17:49 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:49 [GET] /ws/predict [::1]:50194 — 500 (0s)
+[1] 2026/07/18 11:17:54 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:17:54 [GET] /ws/predict [::1]:50195 — 500 (0s)
+[1] 2026/07/18 11:18:01 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:18:01 [GET] /ws/predict [::1]:50196 — 500 (0s)
+[1] 2026/07/18 11:18:06 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:18:06 [GET] /ws/predict [::1]:50197 — 500 (0s)
+[1] 2026/07/18 11:18:13 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:18:13 [GET] /ws/predict [::1]:50200 — 500 (0s)
+[1] 2026/07/18 11:18:20 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:18:20 [GET] /ws/predict [::1]:50201 — 500 (0s)
+[1] 2026/07/18 11:18:25 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:18:25 [GET] /ws/predict [::1]:50202 — 500 (0s)
+[1] 2026/07/18 11:18:32 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:18:32 [GET] /ws/predict [::1]:50204 — 500 (0s)
+[1] 2026/07/18 11:18:38 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:18:38 [GET] /ws/predict [::1]:50205 — 500 (0s)
+[1] 2026/07/18 11:18:43 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:18:43 [GET] /ws/predict [::1]:50207 — 500 (0s)
+[1] 2026/07/18 11:18:47 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:18:47 [GET] /ws/predict [::1]:50209 — 500 (0s)
+[1] 2026/07/18 11:18:53 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:18:53 [GET] /ws/predict [::1]:50210 — 500 (0s)
+[1] 2026/07/18 11:19:00 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:00 [GET] /ws/predict [::1]:50211 — 500 (0s)
+[1] 2026/07/18 11:19:05 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:05 [GET] /ws/predict [::1]:50216 — 500 (0s)
+[1] 2026/07/18 11:19:11 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:11 [GET] /ws/predict [::1]:50219 — 500 (0s)
+[1] 2026/07/18 11:19:15 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:15 [GET] /ws/predict [::1]:50220 — 500 (0s)
+[1] 2026/07/18 11:19:19 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:19 [GET] /ws/predict [::1]:50221 — 500 (0s)
+[1] 2026/07/18 11:19:23 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:23 [GET] /ws/predict [::1]:50222 — 500 (0s)
+[1] 2026/07/18 11:19:27 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:27 [GET] /ws/predict [::1]:50223 — 500 (0s)
+[1] 2026/07/18 11:19:31 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:31 [GET] /ws/predict [::1]:50224 — 500 (0s)
+[1] 2026/07/18 11:19:35 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:35 [GET] /ws/predict [::1]:50225 — 500 (0s)
+[1] 2026/07/18 11:19:39 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:39 [GET] /ws/predict [::1]:50228 — 500 (6µs)
+[1] 2026/07/18 11:19:43 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:43 [GET] /ws/predict [::1]:50230 — 500 (0s)
+[1] 2026/07/18 11:19:47 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:47 [GET] /ws/predict [::1]:50233 — 500 (0s)
+[1] 2026/07/18 11:19:51 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:51 [GET] /ws/predict [::1]:50240 — 500 (0s)
+[1] 2026/07/18 11:19:55 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:55 [GET] /ws/predict [::1]:50242 — 500 (0s)
+[1] 2026/07/18 11:19:58 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:19:58 [GET] /ws/predict [::1]:50243 — 500 (0s)
+[1] 2026/07/18 11:20:01 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:20:01 [GET] /ws/predict [::1]:50244 — 500 (0s)
+[1] 2026/07/18 11:20:05 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:20:05 [GET] /ws/predict [::1]:50245 — 500 (0s)
+[1] 2026/07/18 11:20:09 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:20:09 [GET] /ws/predict [::1]:50247 — 500 (0s)
+[1] 2026/07/18 11:20:14 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:20:14 [GET] /ws/predict [::1]:50249 — 500 (0s)
+[1] 2026/07/18 11:20:21 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:20:21 [GET] /ws/predict [::1]:50250 — 500 (0s)
+[1] 2026/07/18 11:20:26 Upgrade error: websocket: response does not implement http.Hijacker
+[1] 2026/07/18 11:20:26 [GET] /ws/predict [::1]:50251 — 500 (0s)
+
+
+
+
+
+
+

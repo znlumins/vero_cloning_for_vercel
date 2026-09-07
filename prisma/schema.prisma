@@ -1,0 +1,389 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String               @id @default(uuid()) @db.VarChar(36)
+  email               String?              @unique @db.VarChar(255)
+  createdAt           DateTime?            @default(now()) @map("created_at") @db.Timestamp(0)
+  password            String?              @db.VarChar(255)
+  resetToken          String?              @db.VarChar(255)
+  resetTokenExpiry    DateTime?
+  academicStats       AcademicStat[]
+  archiveItems        ArchiveItem[]
+  classPosts          ClassPost[]
+  classes             Class[]              @relation("CreatorRelation")
+  enrollments         Enrollment[]
+  groupMemberships    GroupMember[]
+  createdGroups       Group[]
+  meetingParticipants MeetingParticipant[]
+  receivedMessages    Message[]            @relation("ReceiverRelation")
+  sentMessages        Message[]            @relation("SenderRelation")
+  profile             Profile?
+  schedules           Schedule[]
+  tasks               Task[]
+  notifications       Notification[]
+  announcements       Announcement[]
+  attendanceRecords   AttendanceRecord[]
+
+  @@map("users")
+}
+
+model Profile {
+  id        String  @id @db.VarChar(36)
+  name      String? @db.VarChar(255)
+  role      Role?
+  avatarUrl String? @map("avatar_url") @db.Text
+
+  /// Teman Tuli atau Teman Dengar. Ini bukan data pelengkap: seluruh alasan VERO
+  /// ada adalah mempertemukan keduanya, dan tanpa kolom ini kita tidak punya
+  /// cara apa pun membuktikan platform ini benar-benar dipakai bersama.
+  ///
+  /// NULL berarti profil BELUM LENGKAP — itu satu-satunya penanda yang dipakai
+  /// untuk mengarahkan pengguna ke halaman lengkapi-profil. Sengaja tidak ada
+  /// kolom `profile_completed` terpisah: dua sumber kebenaran untuk satu hal
+  /// pasti berselisih cepat atau lambat.
+  hearingStatus HearingStatus? @map("hearing_status")
+
+  /// Hanya terisi untuk role DOSEN. Pendaftaran dosen tidak langsung aktif —
+  /// tanpa verifikasi, siapa pun bisa mengaku dosen lalu membuat kelas dan
+  /// menilai mahasiswa. MAHASISWA dan ADMIN membiarkannya NULL.
+  dosenStatus DosenStatus? @map("dosen_status")
+
+  /// Asal kampus & program studi.
+  ///
+  /// Disimpan sebagai TEKS BEBAS, bukan relasi ke tabel universitas. Alasannya:
+  /// Indonesia punya ~4.500 perguruan tinggi dan daftarnya berubah tiap tahun
+  /// (kampus bergabung, berganti nama, berubah status). Tabel referensi yang
+  /// tidak pernah diperbarui justru MENGHALANGI orang mendaftar hanya karena
+  /// kampusnya belum sempat dimasukkan. lib/universitas.ts menyediakan daftar
+  /// pilihan untuk membantu mengetik dan menjaga ejaan tetap seragam, tapi
+  /// nilai di luar daftar tetap diterima.
+  ///
+  /// Konsekuensi yang harus disadari: ejaan bisa beragam ("UB" vs "Universitas
+  /// Brawijaya"), jadi jangan pernah mengelompokkan data dengan mencocokkan
+  /// string ini secara persis tanpa normalisasi lebih dulu.
+  university   String? @db.VarChar(255)
+  studyProgram String? @map("study_program") @db.VarChar(255)
+
+  /// Bio singkat. Sebelumnya hanya hidup di user_metadata (localStorage), yang
+  /// artinya bio hanya bisa dibaca oleh pemiliknya sendiri — sementara satu-
+  /// satunya gunanya justru dibaca ORANG LAIN. Sekarang ikut di database supaya
+  /// panel profil di halaman Diskusi bisa menampilkannya.
+  bio String? @db.Text
+
+  /// Denyut kehadiran. Diperbarui berkala oleh POST /api/presence selama tab
+  /// dashboard terbuka, dan sekali lagi saat halaman ditutup.
+  ///
+  /// Tidak ada kolom boolean `is_online` — status daring diturunkan dari selisih
+  /// waktu (lihat lib/presence.ts). Boolean akan macet menyala selamanya begitu
+  /// satu browser tertutup paksa tanpa sempat mengirim apa pun, dan tidak ada
+  /// yang akan pernah membetulkannya.
+  lastSeen DateTime? @map("last_seen") @db.Timestamp(0)
+
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model AcademicStat {
+  id         String   @id @default(uuid()) @db.VarChar(36)
+  userId     String?  @map("user_id") @db.VarChar(36)
+  presensi   Int?     @default(100)
+  user       User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "academic_stats_user_id_fkey")
+  @@map("academic_stats")
+}
+
+model ArchiveItem {
+  id          String    @id @default(uuid()) @db.VarChar(36)
+  userId      String    @map("user_id") @db.VarChar(36)
+  title       String    @db.VarChar(255)
+  fileUrl     String?   @map("file_url") @db.Text
+  fileType    String?   @map("file_type") @db.VarChar(100)
+  description String?   @db.Text
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "archive_items_user_id_fkey")
+  @@map("archive_items")
+}
+
+model Class {
+  id            String       @id @default(uuid()) @db.VarChar(36)
+  creatorUserId String       @map("creator_user_id") @db.VarChar(36)
+  className     String       @map("class_name") @db.VarChar(255)
+  classCode     String       @unique @map("class_code") @db.VarChar(100)
+  lecturerName  String?      @map("lecturer_name") @db.VarChar(255)
+  scheduleTime  String?      @map("schedule_time") @db.VarChar(255)
+  roomLocation  String?      @map("room_location") @db.VarChar(255)
+  createdAt     DateTime?    @default(now()) @map("created_at") @db.Timestamp(0)
+  isPrivate     Boolean?     @default(false) @map("is_private")
+  posts         ClassPost[]
+  creator       User         @relation("CreatorRelation", fields: [creatorUserId], references: [id], onDelete: Cascade)
+  enrollments   Enrollment[]
+  schedules     Schedule[]
+  tasks         Task[]
+  attendanceSessions AttendanceSession[]
+
+  @@index([creatorUserId], map: "classes_creator_user_id_fkey")
+  @@map("classes")
+}
+
+model ClassPost {
+  id        String    @id @default(uuid()) @db.VarChar(36)
+  classId   String    @map("class_id") @db.VarChar(36)
+  userId    String    @map("user_id") @db.VarChar(36)
+  userName  String?   @map("user_name") @db.VarChar(255)
+  content   String?   @db.Text
+  fileUrl   String?   @map("file_url") @db.Text
+  fileType  String?   @map("file_type") @db.VarChar(100)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  class     Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([classId], map: "class_posts_class_id_fkey")
+  @@index([userId], map: "class_posts_user_id_fkey")
+  @@map("class_posts")
+}
+
+model Enrollment {
+  id       String    @id @default(uuid()) @db.VarChar(36)
+  userId   String    @map("user_id") @db.VarChar(36)
+  classId  String    @map("class_id") @db.VarChar(36)
+  joinedAt DateTime? @default(now()) @map("joined_at") @db.Timestamp(0)
+  class    Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([classId], map: "enrollments_class_id_fkey")
+  @@index([userId], map: "enrollments_user_id_fkey")
+  @@map("enrollments")
+}
+
+model ExploreCourse {
+  id        String    @id @default(uuid()) @db.VarChar(36)
+  title     String    @db.VarChar(255)
+  lecturer  String    @db.VarChar(255)
+  imageUrl  String?   @map("image_url") @db.Text
+  category  String?   @db.VarChar(100)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+
+  @@map("explore_courses")
+}
+
+model Group {
+  id        String        @id @default(uuid()) @db.VarChar(36)
+  name      String        @db.VarChar(255)
+
+  /// Foto grup. Null berarti belum ada, dan tampilannya jatuh ke ikon bawaan —
+  /// bukan ke gambar placeholder, karena grup tanpa foto adalah keadaan yang
+  /// sah dan permanen, bukan keadaan setengah jadi.
+  avatarUrl String?       @map("avatar_url") @db.Text
+
+  /// Pembuat grup. Dialah SATU-SATUNYA yang boleh mengubah nama, mengganti
+  /// foto, dan membubarkan grup — ditegakkan di app/api/group/route.ts, bukan
+  /// dengan menyembunyikan tombolnya di UI.
+  ///
+  /// Sengaja belum ada konsep "admin grup" yang bisa lebih dari satu orang:
+  /// itu menuntut kolom peran di GroupMember beserta UI untuk mengangkat dan
+  /// mencopotnya, dan belum ada kebutuhan yang menuntutnya sejauh ini.
+  creatorId String?       @map("creator_id") @db.VarChar(36)
+  createdAt DateTime?     @default(now()) @map("created_at") @db.Timestamp(0)
+  members   GroupMember[]
+  creator   User?         @relation(fields: [creatorId], references: [id])
+
+  @@index([creatorId], map: "groups_creator_id_fkey")
+  @@map("groups")
+}
+
+model GroupMember {
+  id       String    @id @default(uuid()) @db.VarChar(36)
+  groupId  String    @map("group_id") @db.VarChar(36)
+  userId   String    @map("user_id") @db.VarChar(36)
+  joinedAt DateTime? @default(now()) @map("joined_at") @db.Timestamp(0)
+  group    Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([groupId], map: "group_members_group_id_fkey")
+  @@index([userId], map: "group_members_user_id_fkey")
+  @@map("group_members")
+}
+
+model MeetingParticipant {
+  id       String    @id @default(uuid()) @db.VarChar(36)
+  roomId   String    @map("room_id") @db.VarChar(255)
+  userId   String?   @map("user_id") @db.VarChar(36)
+  peerId   String    @map("peer_id") @db.VarChar(255)
+  lastSeen DateTime? @default(now()) @map("last_seen") @db.Timestamp(0)
+  user     User?     @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "meeting_participants_user_id_fkey")
+  @@map("meeting_participants")
+}
+
+model Message {
+  id         String    @id @default(uuid()) @db.VarChar(36)
+  userId     String    @map("user_id") @db.VarChar(36)
+  userName   String?   @map("user_name") @db.VarChar(255)
+  content    String    @db.Text
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  // Diisi server saat pesan disunting. Null = belum pernah diubah. Dipakai untuk
+  // menampilkan penanda "diedit" supaya penerima tahu isinya sempat berubah
+  // setelah dikirim.
+  isEdited   Boolean?  @default(false) @map("is_edited")
+  editedAt   DateTime? @map("edited_at") @db.Timestamp(0)
+
+  // Hapus BERSIFAT LUNAK. Barisnya tetap ada, isinya dikosongkan server, dan
+  // gelembungnya berubah jadi "Pesan ini telah dihapus". Menghapus barisnya
+  // sungguhan akan mencabut satu giliran dari tengah percakapan, sehingga sisa
+  // percakapan yang menanggapinya jadi tidak bisa dimengerti lagi.
+  isDeleted  Boolean?  @default(false) @map("is_deleted")
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamp(0)
+
+  type       String?   @default("text") @db.VarChar(50)
+  peerId     String?   @map("peer_id") @db.VarChar(255)
+  groupId    String?   @map("group_id") @db.VarChar(36)
+  receiverId String?   @map("receiver_id") @db.VarChar(36)
+  receiver   User?     @relation("ReceiverRelation", fields: [receiverId], references: [id])
+  user       User      @relation("SenderRelation", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([receiverId], map: "messages_receiver_id_fkey")
+  @@index([userId], map: "messages_user_id_fkey")
+  @@map("messages")
+}
+
+model Schedule {
+  id          String    @id @default(uuid()) @db.VarChar(36)
+  classId     String?   @map("class_id") @db.VarChar(36)
+  creatorId   String?   @map("creator_id") @db.VarChar(36)
+  subjectName String    @map("subject_name") @db.VarChar(255)
+  startTime   DateTime  @map("start_time")
+  endTime     DateTime  @map("end_time")
+  location    String?   @default("Online") @db.VarChar(255)
+  isOnline    Boolean?  @default(true) @map("is_online")
+  roomId      String?   @map("room_id") @db.VarChar(255)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  class       Class?    @relation(fields: [classId], references: [id])
+  creator     User?     @relation(fields: [creatorId], references: [id])
+
+  @@index([classId], map: "schedules_class_id_fkey")
+  @@index([creatorId], map: "schedules_creator_id_fkey")
+  @@map("schedules")
+}
+
+model Task {
+  id       String    @id @default(uuid()) @db.VarChar(36)
+  classId  String    @map("class_id") @db.VarChar(36)
+  userId   String?   @map("user_id") @db.VarChar(36)
+  title    String?   @db.VarChar(255)
+  subject  String?   @db.VarChar(255)
+  deadline DateTime?
+  progress Int?      @default(0)
+  class    Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
+  user     User?     @relation(fields: [userId], references: [id])
+
+  @@index([classId], map: "tasks_class_id_fkey")
+  @@index([userId], map: "tasks_user_id_fkey")
+  @@map("tasks")
+}
+
+model TaskSubmission {
+  id          String    @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  taskId      String    @map("task_id") @db.VarChar(36)
+  userId      String    @map("user_id") @db.VarChar(36)
+  userName    String?   @map("user_name") @db.VarChar(255)
+  note        String?   @db.Text
+  fileUrl     String?   @map("file_url") @db.Text
+  submittedAt DateTime? @default(now()) @map("submitted_at") @db.Timestamp(0)
+
+  @@index([taskId], map: "task_submissions_task_id_fkey")
+  @@index([userId], map: "task_submissions_user_id_fkey")
+  @@map("task_submissions")
+}
+
+model Notification {
+  id        String    @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  userId    String    @map("user_id") @db.VarChar(36)
+  title     String    @db.VarChar(255)
+  body      String?   @db.Text
+  type      String?   @default("info") @db.VarChar(100)
+  link      String?   @db.VarChar(500)
+  isRead    Boolean?  @default(false) @map("is_read")
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "notifications_user_id_fkey")
+  @@map("notifications")
+}
+
+model Announcement {
+  id        String    @id @default(dbgenerated("(uuid())")) @db.VarChar(36)
+  userId    String    @map("user_id") @db.VarChar(36)
+  title     String    @db.VarChar(255)
+  tag       String    @db.VarChar(100)
+  tagColor  String    @map("tag_color") @db.VarChar(50)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "announcements_user_id_fkey")
+  @@map("announcements")
+}
+
+enum Role {
+  MAHASISWA
+  DOSEN
+
+  /// ADMIN sengaja TIDAK bisa didapat lewat pendaftaran publik — /api/auth
+  /// menolaknya secara eksplisit. Satu-satunya jalan adalah skrip
+  /// `npm run make-admin`, yang dijalankan orang dengan akses server.
+  ADMIN
+}
+
+/// Teman Tuli / Teman Dengar. Istilahnya memakai bahasa yang dipakai komunitas
+/// itu sendiri, bukan "difabel" atau "normal" — pilihan kata di sini ikut
+/// terbaca pengguna, bukan cuma dipakai mesin.
+enum HearingStatus {
+  TEMAN_TULI
+  TEMAN_DENGAR
+}
+
+/// Verifikasi pendaftaran dosen.
+enum DosenStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model AttendanceSession {
+  id        String             @id @default(uuid()) @db.VarChar(36)
+  classId   String             @map("class_id") @db.VarChar(36)
+  isOpen    Boolean            @default(true) @map("is_open")
+  createdAt DateTime?          @default(now()) @map("created_at") @db.Timestamp(0)
+  class     Class              @relation(fields: [classId], references: [id], onDelete: Cascade)
+  records   AttendanceRecord[]
+
+  @@index([classId], map: "attendance_sessions_class_id_fkey")
+  @@map("attendance_sessions")
+}
+
+model AttendanceRecord {
+  id        String             @id @default(uuid()) @db.VarChar(36)
+  sessionId String             @map("session_id") @db.VarChar(36)
+  userId    String             @map("user_id") @db.VarChar(36)
+  status    String             @db.VarChar(50) 
+  createdAt DateTime?          @default(now()) @map("created_at") @db.Timestamp(0)
+  session   AttendanceSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId], map: "attendance_records_session_id_fkey")
+  @@index([userId], map: "attendance_records_user_id_fkey")
+  @@map("attendance_records")
+}

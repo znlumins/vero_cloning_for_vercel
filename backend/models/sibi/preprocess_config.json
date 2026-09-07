@@ -1,0 +1,61 @@
+{
+  "sequence_length": 30,
+  "num_hand_landmarks": 21,
+  "fingertips": [
+    4,
+    8,
+    12,
+    16,
+    20
+  ],
+  "wrist_index": 0,
+  "middle_finger_mcp_index": 9,
+  "pose_indices": [
+    0,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "features_per_frame": 212,
+  "feature_layout": {
+    "right_hand_normalized": {
+      "start": 0,
+      "end": 63
+    },
+    "left_hand_normalized": {
+      "start": 63,
+      "end": 126
+    },
+    "right_fingertip_distances": {
+      "start": 126,
+      "end": 136
+    },
+    "left_fingertip_distances": {
+      "start": 136,
+      "end": 146
+    },
+    "inter_hand_distances": {
+      "start": 146,
+      "end": 172
+    },
+    "right_finger_angles": {
+      "start": 172,
+      "end": 177
+    },
+    "left_finger_angles": {
+      "start": 177,
+      "end": 182
+    },
+    "pose_upper_body": {
+      "start": 182,
+      "end": 210
+    },
+    "hand_presence_flags": {
+      "start": 210,
+      "end": 212
+    }
+  }
+}

@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+/* Dark mode: strategi berbasis class (html.dark), Tailwind v4. Membuat varian
+   `dark:` aktif saat elemen berada di dalam .dark. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #fdfdfc;
+  --foreground: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-nunito-sans), ui-sans-serif, system-ui, sans-serif;
+  
+  /* Theme UI Overrides */
+  --color-indigo-50: #ecfdf5;
+  --color-indigo-100: #d1fae5;
+  --color-indigo-200: #a7f3d0;
+  --color-indigo-500: #10b981;
+  --color-indigo-600: #059669;
+  --color-indigo-700: #047857;
+
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+
+  /* Soft & Clean Shadows (Reverting the retro flat shadows) */
+  --shadow-sm: 0px 2px 4px rgba(15, 23, 42, 0.04), 0px 1px 2px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0px 4px 6px -1px rgba(15, 23, 42, 0.05), 0px 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0px 10px 15px -3px rgba(15, 23, 42, 0.06), 0px 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-xl: 0px 20px 25px -5px rgba(15, 23, 42, 0.08), 0px 8px 10px -6px rgba(15, 23, 42, 0.04);
+
+  /* Boxy Radius Overrides (Sharper Corners) */
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 6px;
+  --radius-2xl: 8px;
+  --radius-3xl: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Widget aksesibilitas Vero — posisi AWAL launcher di pojok KANAN bawah.
+   Pengaman kalau data-vero-position tidak terbaca; menimpa posisi bawaan.
+
+   Catatan: tombol ini bisa digeser pengguna (components/SiennaDraggable.tsx).
+   Setelah digeser, posisinya ditulis sebagai inline style ber-!important —
+   satu-satunya cara mengalahkan !important di bawah — dan disimpan di
+   localStorage. Jadi aturan ini hanya berlaku sampai geseran pertama. */
+.vero-menu-btn {
+  left: auto !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  top: auto !important;
+}
+
+/* =========================================================================
+   DARK MODE — lapisan kompatibilitas
+   -------------------------------------------------------------------------
+   Aplikasi ini memakai utility warna terang hardcoded (bg-white, text-slate-*,
+   dll) di ~15 halaman. Alih-alih menyisir tiap elemen, utility dominan itu
+   dipetakan-ulang ke padanan gelap di bawah .dark. Warna aksen (emerald/hijau,
+   biru, merah, violet, pink, amber) & text-white sengaja DIBIARKAN — semuanya
+   sudah terbaca baik di atas gelap.
+
+   Pakai !important agar menang atas layer utilities Tailwind. Untuk pengecualian
+   per-elemen, gunakan modifier penting varian dark (mis. `dark:bg-x!`).
+   ========================================================================= */
+.dark {
+  --background: #0b1120;
+  --foreground: #e2e8f0;
+  color-scheme: dark;
+}
+.dark body { background-color: var(--background); color: var(--foreground); }
+
+/* Permukaan / latar */
+.dark .bg-white { background-color: #111827 !important; }        /* kartu (elevated) */
+.dark .bg-slate-50 { background-color: #0b1120 !important; }     /* latar halaman */
+.dark .bg-slate-100 { background-color: #1e293b !important; }    /* isian halus */
+.dark .bg-slate-200 { background-color: #334155 !important; }
+/* Latar semi-transparan (navbar blur, overlay kamera) */
+.dark .bg-white\/80 { background-color: rgba(17,24,39,0.80) !important; }
+.dark .bg-white\/95 { background-color: rgba(17,24,39,0.95) !important; }
+.dark .bg-slate-50\/50 { background-color: rgba(11,17,32,0.50) !important; }
+.dark .bg-slate-50\/30 { background-color: rgba(11,17,32,0.30) !important; }
+.dark .bg-slate-100\/60 { background-color: rgba(30,41,59,0.60) !important; }
+/* bg-slate-900 & bg-black DIBIARKAN: sudah gelap, teks putih di atasnya aman. */
+
+/* Teks */
+.dark .text-slate-900 { color: #f1f5f9 !important; }
+.dark .text-slate-800 { color: #e2e8f0 !important; }
+.dark .text-slate-700 { color: #cbd5e1 !important; }
+.dark .text-slate-600 { color: #a3b2c7 !important; }
+.dark .text-slate-500 { color: #94a3b8 !important; }
+/* text-slate-400 (#94a3b8) & text-white dibiarkan — sudah kontras di gelap. */
+
+/* Border */
+.dark .border-slate-100 { border-color: #1e293b !important; }
+.dark .border-slate-200 { border-color: #273449 !important; }
+.dark .border-slate-300 { border-color: #334155 !important; }
+.dark .border-white { border-color: #1e293b !important; }
+
+/* Elemen form ikut skema gelap (placeholder, caret, autofill) */
+.dark input, .dark textarea, .dark select { color: var(--foreground); }
+.dark ::placeholder { color: #64748b !important; }
+
+/* Netralkan GLOW shadow berwarna di dark mode.
+   Tombol memakai shadow berwarna (shadow-indigo-200, shadow-emerald-200, dll —
+   dan "indigo" di app ini di-override jadi HIJAU). Di atas latar gelap, warna
+   terang itu jadi halo menyilaukan & tidak nyaman dilihat. Di sini warna
+   shadow-nya (--tw-shadow-color) diganti gelap transparan supaya tetap ada
+   kedalaman tapi tidak menyala. Ukuran/blur shadow tidak diubah. */
+.dark [class*="shadow-indigo-"],
+.dark [class*="shadow-emerald-"],
+.dark [class*="shadow-red-"],
+.dark [class*="shadow-amber-"],
+.dark [class*="shadow-blue-"],
+.dark [class*="shadow-violet-"],
+.dark [class*="shadow-pink-"],
+.dark [class*="shadow-slate-"] {
+  --tw-shadow-color: rgba(2, 6, 23, 0.55) !important;
+}
+
+/* Transisi lembut saat berganti tema */
+html.theme-anim, html.theme-anim * {
+  transition: background-color .25s ease, border-color .25s ease, color .25s ease;
+}

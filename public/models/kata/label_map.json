@@ -1,0 +1,33 @@
+{
+ "labels": [
+  "bapak dosen",
+  "bertanya",
+  "ibu dosen",
+  "izin",
+  "mahasiswa",
+  "menjawab",
+  "mohon maaf",
+  "nama",
+  "perkenalkan",
+  "saya",
+  "selamat pagi",
+  "terlambat"
+ ],
+ "index_to_label": {
+  "0": "bapak dosen",
+  "1": "bertanya",
+  "2": "ibu dosen",
+  "3": "izin",
+  "4": "mahasiswa",
+  "5": "menjawab",
+  "6": "mohon maaf",
+  "7": "nama",
+  "8": "perkenalkan",
+  "9": "saya",
+  "10": "selamat pagi",
+  "11": "terlambat"
+ },
+ "num_classes": 12,
+ "sequence_length": 30,
+ "features_per_frame": 212
+}
