@@ -14,6 +14,11 @@ type Config struct {
 
 func Load() *Config {
 	port := 8080
+	// PORT is what container platforms (Vercel Services, Cloud Run, Heroku) inject.
+	// VERO_GO_PORT stays as an explicit override for local/self-hosted runs.
+	if p, err := strconv.Atoi(os.Getenv("PORT")); err == nil {
+		port = p
+	}
 	if p, err := strconv.Atoi(os.Getenv("VERO_GO_PORT")); err == nil {
 		port = p
 	}
