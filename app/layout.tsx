@@ -21,7 +21,7 @@ const nunitoSans = Nunito_Sans({
 // VERO Learning. Ejaan lain didaftarkan sebagai alternateName di JsonLd.tsx,
 // bukan dipakai bergantian di sini.
 export const metadata: Metadata = {
-  metadataBase: new URL("https://verolearning.my.id"),
+  metadataBase: new URL("https://www.verolearn.web.id"),
   title: {
     default: "VERO Learning — Belajar & Terjemah Bahasa Isyarat",
     template: "%s | VERO Learning",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "id_ID",
-    url: "https://verolearning.my.id",
+    url: "https://www.verolearn.web.id",
     siteName: "VERO Learning",
     title: "VERO Learning — Belajar & Terjemah Bahasa Isyarat",
     description:

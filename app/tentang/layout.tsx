@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "VERO Learning lahir dari PKM-KC Universitas Brawijaya untuk membuka akses belajar bagi Teman Tuli lewat AI pengenalan bahasa isyarat.",
   alternates: { canonical: "/tentang" },
   openGraph: {
-    url: "https://verolearning.my.id/tentang",
+    url: "https://www.verolearn.web.id/tentang",
     title: "Tentang VERO — PKM-KC Universitas Brawijaya",
     description:
       "VERO Learning lahir dari PKM-KC Universitas Brawijaya untuk membuka akses belajar bagi Teman Tuli lewat AI pengenalan bahasa isyarat.",

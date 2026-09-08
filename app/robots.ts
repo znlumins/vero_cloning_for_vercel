@@ -28,7 +28,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: "https://verolearning.my.id/sitemap.xml",
-    host: "https://verolearning.my.id",
+    sitemap: "https://www.verolearn.web.id/sitemap.xml",
+    host: "https://www.verolearn.web.id",
   };
 }

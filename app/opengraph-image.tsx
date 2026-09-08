@@ -78,7 +78,7 @@ export default function OpengraphImage() {
               fontWeight: 700,
             }}
           >
-            verolearning.my.id
+            www.verolearn.web.id
           </div>
           <div style={{ display: "flex", fontSize: 22, color: "#94a3b8" }}>
             PKM-KC Universitas Brawijaya

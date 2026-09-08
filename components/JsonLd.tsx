@@ -22,13 +22,13 @@ const data = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://verolearning.my.id/#organization",
+      "@id": "https://www.verolearn.web.id/#organization",
       name: "VERO Learning",
       alternateName: ["Vero Learn", "VeroLearn", "VeroApp", "VERO", "Vero LMS"],
-      url: "https://verolearning.my.id",
+      url: "https://www.verolearn.web.id",
       logo: {
         "@type": "ImageObject",
-        url: "https://verolearning.my.id/vero-logo.svg",
+        url: "https://www.verolearn.web.id/vero-logo.svg",
       },
       description:
         "Platform pembelajaran inklusif yang menerjemahkan bahasa isyarat BISINDO dan SIBI menjadi teks secara langsung melalui kamera.",
@@ -50,18 +50,18 @@ const data = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://verolearning.my.id/#website",
-      url: "https://verolearning.my.id",
+      "@id": "https://www.verolearn.web.id/#website",
+      url: "https://www.verolearn.web.id",
       name: "VERO Learning",
       alternateName: ["Vero Learn", "VeroLearn", "VeroApp"],
       inLanguage: "id-ID",
-      publisher: { "@id": "https://verolearning.my.id/#organization" },
+      publisher: { "@id": "https://www.verolearn.web.id/#organization" },
     },
     {
       "@type": "WebApplication",
-      "@id": "https://verolearning.my.id/#app",
+      "@id": "https://www.verolearn.web.id/#app",
       name: "VERO Learning",
-      url: "https://verolearning.my.id",
+      url: "https://www.verolearn.web.id",
       applicationCategory: "EducationalApplication",
       operatingSystem: "Peramban web (Chrome, Edge, Firefox)",
       browserRequirements: "Membutuhkan JavaScript dan akses kamera",
@@ -76,7 +76,7 @@ const data = {
         "Papan tulis digital",
         "Ruang pertemuan daring yang ramah Teman Tuli",
       ],
-      publisher: { "@id": "https://verolearning.my.id/#organization" },
+      publisher: { "@id": "https://www.verolearn.web.id/#organization" },
     },
   ],
 };

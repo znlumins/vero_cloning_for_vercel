@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     "Terjemahkan bahasa isyarat BISINDO dan SIBI menjadi teks langsung dari kamera. Gratis, jalan di browser, tanpa memasang aplikasi.",
   alternates: { canonical: "/terjemah" },
   openGraph: {
-    url: "https://verolearning.my.id/terjemah",
+    url: "https://www.verolearn.web.id/terjemah",
     title: "Penerjemah Bahasa Isyarat BISINDO & SIBI — VERO Learning",
     description:
       "Terjemahkan bahasa isyarat BISINDO dan SIBI menjadi teks langsung dari kamera. Gratis, jalan di browser, tanpa memasang aplikasi.",

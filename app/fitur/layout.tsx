@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     "Kenali fitur VERO Learning: pengenalan abjad BISINDO & SIBI, kata BISINDO, speech-to-text, dan kelas daring yang ramah Teman Tuli.",
   alternates: { canonical: "/fitur" },
   openGraph: {
-    url: "https://verolearning.my.id/fitur",
+    url: "https://www.verolearn.web.id/fitur",
     title: "Fitur VERO: Terjemah Isyarat, Teks & Suara",
     description:
       "Kenali fitur VERO Learning: pengenalan abjad BISINDO & SIBI, kata BISINDO, speech-to-text, dan kelas daring yang ramah Teman Tuli.",

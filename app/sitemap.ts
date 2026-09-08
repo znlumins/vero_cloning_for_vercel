@@ -6,7 +6,7 @@ import type { MetadataRoute } from "next";
 // Hanya halaman PUBLIK yang masuk. Semua di bawah /dashboard ada di balik login;
 // mencantumkannya cuma membuat laporan Search Console penuh galat "halaman
 // dialihkan / tidak dapat diakses".
-const BASE = "https://verolearning.my.id";
+const BASE = "https://www.verolearn.web.id";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date("2026-08-15");
